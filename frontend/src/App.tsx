@@ -3,6 +3,7 @@ import logo from './assets/images/logo-universal.png';
 import './App.css';
 import { Greet, GetNetworkDevices } from "../wailsjs/go/main/App";
 import { main } from '../wailsjs/go/models';
+import { Button } from "@/components/ui/button"
 
 function App() {
     const [resultText, setResultText] = useState("Please enter your name below 👇");
@@ -35,8 +36,7 @@ function App() {
                 <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text" />
                 <button className="btn" onClick={greet}>Greet</button>
             </div>
-
-            {interfaces?.map((item, i) => <div>{item.Name}</div>)}
+            {interfaces?.map((item, i) => <Button>{item.Name}</Button>)}
         </div>
     )
 }
