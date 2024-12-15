@@ -4,6 +4,7 @@ import './App.css';
 import { Greet, GetNetworkDevices } from "../wailsjs/go/main/App";
 import { main } from '../wailsjs/go/models';
 import { Button } from "@/components/ui/button"
+import { useNavigate } from 'react-router-dom';
 
 function App() {
     const [resultText, setResultText] = useState("Please enter your name below 👇");
@@ -11,6 +12,7 @@ function App() {
     const [interfaces, setInterfaces] = useState<main.Interface[]>([]);
     const updateName = (e: any) => setName(e.target.value);
     const updateResultText = (result: string) => setResultText(result);
+    const navigate = useNavigate();
 
 
     function greet() {
@@ -27,6 +29,10 @@ function App() {
         console.log("Mounted")
     }, [])
 
+    const handleClcik = () => {
+        navigate("/capture")
+    }
+
     return (
 
         <div id="App">
@@ -37,6 +43,7 @@ function App() {
                 <button className="btn" onClick={greet}>Greet</button>
             </div>
             {interfaces?.map((item, i) => <Button>{item.Name}</Button>)}
+            <Button onClick={handleClcik} />
         </div>
     )
 }
