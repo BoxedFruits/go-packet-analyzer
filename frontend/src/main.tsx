@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './style.css'
 import App from './App'
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Capture from './apps/capture';
+import Capture from './routes/capture';
 
 
 const container = document.getElementById('root')
@@ -15,7 +15,7 @@ root.render(
         <HashRouter basename={"/"}>
             <Routes>
                 <Route path="/" element={<App />} />
-                <Route path="/capture" element={<Capture />} />
+                <Route path="/capture/:interfaceName" element={<Capture />} />
             </Routes>
         </HashRouter>
     </React.StrictMode>
