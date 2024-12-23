@@ -30,7 +30,7 @@ function App() {
             <div id="layout" className='m-5'>
                 <h1 className='text-black flex'>Interfaces</h1>
                 <div className='flex flex-col py-2'>
-                    {interfaces?.map((item, i) =>
+                    {interfaces?.map((item, _) =>
                         <div className='basis-3 my-2'>
                             <Button onClick={() => { handleClick(item.Name) }}>{item.Name}</Button>
                         </div>
