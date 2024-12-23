@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import logo from './assets/images/logo-universal.png';
+// import logo from './assets/images/logo-universal.png';
 import './App.css';
-import { Greet, GetNetworkDevices } from "../wailsjs/go/main/App";
-import { main } from '../wailsjs/go/models';
+import { GetNetworkInterfaces } from "../wailsjs/go/PacketCapture/NetworkInterfaces";
 import { Button } from "@/components/ui/button"
 import { useNavigate } from 'react-router-dom';
+import { PacketCapture } from 'wailsjs/go/models';
 
 function App() {
-    const [name, setName] = useState('');
-    const [interfaces, setInterfaces] = useState<main.Interface[]>([]);
-    const updateName = (e: any) => setName(e.target.value);
+    const [interfaces, setInterfaces] = useState<PacketCapture.Interface[]>([]);
     const navigate = useNavigate();
 
 
     useEffect(() => {
         const getNetworkDevices = async () => {
-            GetNetworkDevices().then((devices) => {
-                setInterfaces(devices)
+            GetNetworkInterfaces().then((interfaces) => {
+                setInterfaces(interfaces)
             })
         }
         getNetworkDevices()

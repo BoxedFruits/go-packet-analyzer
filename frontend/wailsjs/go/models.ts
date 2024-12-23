@@ -1,4 +1,4 @@
-export namespace main {
+export namespace PacketCapture {
 	
 	export class Interface {
 	    Name: string;
