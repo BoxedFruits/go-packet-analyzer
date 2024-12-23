@@ -1,11 +1,11 @@
 export namespace PacketCapture {
 	
-	export class Interface {
+	export class NetworkInterface {
 	    Name: string;
 	    Details: {[key: string]: string};
 	
 	    static createFrom(source: any = {}) {
-	        return new Interface(source);
+	        return new NetworkInterface(source);
 	    }
 	
 	    constructor(source: any = {}) {

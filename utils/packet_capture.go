@@ -2,6 +2,8 @@ package PacketCapture
 
 import (
 	"fmt"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
 	"log"
 	"os/exec"
 	"regexp"
@@ -9,21 +11,21 @@ import (
 )
 
 //
-// type NetworkInterface struct {
+// type Details struct {
 // 	enabled     bool
 // 	isCapturing bool
 // }
 
-type Interface struct {
+type NetworkInterface struct {
 	Name    string
 	Details map[string]string
 }
 
 type NetworkInterfaces struct {
-	Interfaces []Interface
+	Interfaces []*NetworkInterface
 }
 
-func (networkInterfaces *NetworkInterfaces) GetNetworkInterfaces() []Interface {
+func (networkInterfaces *NetworkInterfaces) GetNetworkInterfaces() []NetworkInterface {
 	out, err := exec.Command("ip", "link", "show").Output()
 	if err != nil {
 		log.Fatal(err)
@@ -56,9 +58,9 @@ func (networkInterfaces *NetworkInterfaces) GetNetworkInterfaces() []Interface {
 // seperate useful things into a map of details
 
 // for now, only get the interface name
-func parseIpLinkShow(output string) ([]Interface, error) {
-	var interfaces []Interface
-	var currentInterface Interface
+func parseIpLinkShow(output string) ([]NetworkInterface, error) {
+	var interfaces []NetworkInterface
+	var currentInterface NetworkInterface
 	currentInterface.Details = make(map[string]string)
 
 	lines := strings.Split(output, "\n")
@@ -68,7 +70,7 @@ func parseIpLinkShow(output string) ([]Interface, error) {
 			if currentInterface.Name != "" {
 				interfaces = append(interfaces, currentInterface)
 			}
-			currentInterface = Interface{}
+			currentInterface = NetworkInterface{}
 			currentInterface.Details = make(map[string]string)
 			currentInterface.Name = strings.Split(line, ":")[1]
 		} else if line != "" { // Ignore empty lines
@@ -116,9 +118,27 @@ func extractKeyValue(line string) (string, string) {
 	return "", ""
 }
 
-// func (networkInferface *NetworkInterface) Capture() {
-//
-// }
+func (networkInferface2 *NetworkInterface) StartNetworkCapture(networkInferface *NetworkInterface) {
+
+	if handle, err := pcap.OpenLive(strings.Trim(networkInferface.Name, " "), 1600, true, pcap.BlockForever); err != nil {
+		fmt.Println("first")
+		panic(err)
+		// } else if err := handle.SetBPFFilter("tcp and port 80"); err != nil { // optional
+		// 	fmt.Println("second")
+		// 	panic(err)
+	} else {
+		fmt.Println("third")
+		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+		fmt.Println("Fourth")
+		for packet := range packetSource.Packets() {
+			fmt.Println("READING PACKETS")
+			fmt.Println(packet)
+			//handlePacket(packet)  // Do something with a packet here.
+		}
+	}
+
+}
+
 //
 // func EndCapture() {
 //
